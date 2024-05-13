@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id "maven-publish"
+}
+
+group = 'com.github.datatower-ai'
+version = "1.0.0"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    testImplementation 'com.google.code.gson:gson:2.10.1'
+}
+
+jar {
+    from {
+        configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId "dt-java-sdk"
+            from components.java
+        }
+    }
+}
